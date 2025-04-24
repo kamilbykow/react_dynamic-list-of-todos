@@ -12,7 +12,7 @@ import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[] | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [todo, setTodo] = useState<Todo | undefined>();
   const [isModalShowed, setIsModalShowed] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -28,7 +28,7 @@ export const App: React.FC = () => {
         return item.completed;
       }
 
-      return item;
+      return true;
     })
     .filter(item =>
       item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
@@ -39,7 +39,7 @@ export const App: React.FC = () => {
       .then(json => {
         setTodos(json);
       })
-      .finally(() => setIsLoading(true));
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -54,7 +54,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isLoading ? (
+              {isLoading ? (
                 <Loader />
               ) : (
                 <TodoList
